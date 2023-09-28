@@ -1,0 +1,29 @@
+import pandas as pd
+
+# Load sales data from a CSV file
+sales_data = pd.read_csv('sales_data.csv')
+# Handle missing values
+sales_data.dropna(inplace=True)
+
+# Remove duplicates
+sales_data.drop_duplicates(inplace=True)
+
+# Convert date column to datetime type
+sales_data['Date'] = pd.to_datetime(sales_data['Date'])
+import matplotlib.pyplot as plt
+
+# Sales over time
+plt.figure(figsize=(10, 6))
+plt.plot(sales_data['Date'], sales_data['Quantity Sold'])
+plt.xlabel('Date')
+plt.ylabel('Quantity Sold')
+plt.title('Product Sales Over Time')
+plt.show()
+# Calculate total revenue
+sales_data['Total Revenue'] = sales_data['Quantity Sold'] * sales_data['Price']
+
+# Top-selling products
+top_products = sales_data.groupby('Product Name')['Quantity Sold'].sum().sort_values(ascending=False).head(10)
+
+# Average sales per product
+avg_sales_per_product = sales_data.groupby('Product Name')['Quantity Sold'].mean()
